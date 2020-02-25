@@ -4,8 +4,10 @@
  * Usaremos una clase derivada de la clase Scene de Three.js para llevar el control de la escena y de todo lo que ocurre en ella.
  */
 
-class MyScene extends THREE.Scene {
-  constructor (myCanvas) {
+class MyScene extends THREE.Scene
+{
+  constructor (myCanvas) 
+  {
     super();
     
     // Lo primero, crear el visualizador, pasándole el lienzo sobre el que realizar los renderizados.
