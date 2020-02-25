@@ -8,7 +8,7 @@ class MyBox extends THREE.Object3D{
         var boxGeom = new THREE.BoxGeometry (1,1,1);
 
         //Material
-        var boxMat = new THREE.MeshPhongMaterial({color:0xCF0000});
+        var boxMat = new THREE.MeshNormalMaterial({color:0xCF0000});
 
         //Malla (Geometria y material)
         var box = new THREE.Mesh (boxGeom,boxMat);
