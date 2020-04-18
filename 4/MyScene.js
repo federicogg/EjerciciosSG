@@ -30,12 +30,12 @@ class MyScene extends THREE.Scene {
       this.axis = new THREE.AxesHelper (7);
       this.add (this.axis);
 
-      this.dibujarObjRev("Controles Objeto por Barrido");
+      this.dibujarObjBarrido("Controles Objeto por Barrido");
       
       
     }
 
-    dibujarObjRev (titleGUI)
+    dibujarObjBarrido (titleGUI)
     {
       this.model = new ObjBarr(this.gui, titleGUI);
       this.add (this.model);
