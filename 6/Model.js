@@ -5,8 +5,8 @@ class Model extends THREE.Object3D
         super();
 
         var that = this ;
-        var materialLoader = new THREE. MTLLoader ();
-        var objectLoader = new THREE. OBJLoader ();
+        var materialLoader = new THREE.MTLLoader();
+        var objectLoader = new THREE.OBJLoader();
         materialLoader.load('porsche911/911.mtl',
         function ( materials ) {
             objectLoader.setMaterials (materials);
