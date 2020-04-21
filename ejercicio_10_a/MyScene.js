@@ -113,13 +113,17 @@ class MyScene extends THREE.Scene {
       this.spotLight.intensity = this.guiControls.lightIntensity;
       this.axis.visible = this.guiControls.axisOnOff;
       
+      //Satelite 1 y tierra
       this.satelite1.rotation.y += 0.01;
       this.tierraMesh.rotation.y += 0.01;
 
+      //Rotación sobre el eje
       this.satelite2Mesh.rotation.y += 0.01;
+
+      //Mirada del satélite 3 a la cámara
       this.satelite3.lookAt(this.camera.position.x,this.camera.position.y,this.camera.position.z);
 
-      //Satelites 
+      //Satelites 2 y 3
       this.rotacion.rotation.y += 0.01;
 
       this.cameraControl.update();
