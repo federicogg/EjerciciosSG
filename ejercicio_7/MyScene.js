@@ -18,8 +18,6 @@ class MyScene extends THREE.Scene {
       this.pendulos = new Pendulos(this.gui);
       this.add (this.pendulos);
 
-      this.pendulos = new PenduloInf(this.gui, "Controles pendulo");
-      this.add (this.pendulos);
 
 
     }
