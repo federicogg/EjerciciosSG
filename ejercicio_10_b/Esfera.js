@@ -89,7 +89,6 @@ class Esfera extends THREE.Object3D
         this.add(this.sphere);
 
         this.sphere.rotation.y += 0.06;
-        //this.sphere.position.y = this.sphereRadius/2 + this.desajuste;
 
         
     }
