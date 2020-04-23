@@ -1,6 +1,8 @@
 class MyScene extends THREE.Scene {
     constructor (myCanvas) {
       super();
+
+      
       
       // Lo primero, crear el visualizador, pasándole el lienzo sobre el que realizar los renderizados.
       this.renderer = this.createRenderer(myCanvas);
@@ -22,7 +24,7 @@ class MyScene extends THREE.Scene {
 
     createSphere()
     {
-      this.sphere = new Esfera();
+      this.sphere = new Esfera(this.gui);
       this.add(this.sphere)
     }
 
@@ -32,7 +34,7 @@ class MyScene extends THREE.Scene {
       this.spotLight.intensity = this.guiControls.lightIntensity;
       this.axis.visible = this.guiControls.axisOnOff;
       
-
+      this.sphere.update();
       this.cameraControl.update();
 
       

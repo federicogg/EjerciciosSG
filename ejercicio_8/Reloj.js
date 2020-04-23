@@ -39,9 +39,5 @@ class Reloj extends THREE.Object3D {
     // Y por último la traslación
 
     this.rotation.y += this.guiControls.velocidad*0.025;
-
-
-
-
   }
 }
