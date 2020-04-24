@@ -73,7 +73,7 @@ class MyScene extends THREE.Scene {
       }
       
       
-      if (this.rotacion.position.y >= 15)
+      if (this.rotacion.position.y >= 17)
         this.subiendo = false;
       else if (this.rotacion.position.y <= 0)
         this.subiendo = true;
@@ -83,7 +83,8 @@ class MyScene extends THREE.Scene {
       else
         this.rotacion.position.y -= this.guiControls.velocidadBajada;
 
-      this.rotacion.rotation.y += 0.1;
+      this.rotacion.rotation.y += 0.01;
+      this.camera.position.x += 0.01;
       
       this.cameraControl.update();
 
