@@ -16,16 +16,38 @@ class MyScene extends THREE.Scene {
       
       this.axis = new THREE.AxesHelper (7);
       this.add (this.axis);
-
-      this.createGround();
       this.createSphere();
+      this.createGround();
+      this.createCylinder();
+      this.rotacion = new THREE.Object3D();
+      this.rotacion.add(this.sphere);
+
+      this.add(this.rotacion);
 
     }
 
     createSphere()
     {
-      this.sphere = new Esfera(this.gui);
-      this.add(this.sphere)
+      this.sphereRadius = 3;
+      this.subiendo = true;
+      this.geometry = new THREE.SphereGeometry(this.sphereRadius/2,20);
+      this.material = new THREE.MeshPhongMaterial({color:0xbb0dee});
+      this.sphereMesh = new THREE.Mesh(this.geometry, this.material);
+      this.sphere = new THREE.Object3D();
+      this.sphere.position.y = this.sphereRadius/2;
+      this.sphere.position.x = this.guiControls.radio;
+      this.sphere.add(this.sphereMesh);
+    }
+
+    createCylinder()
+    {
+      this.radio = 20.0;
+      this.geometryCylinder = new THREE.CylinderGeometry(this.radio, this.radio, 40, 32);
+      this.materialCylinder = new THREE.MeshNormalMaterial({opacity:0.35,transparent:true})
+      
+      this.cylinder = new THREE.Mesh (this.geometryCylinder,this.materialCylinder);
+  
+      this.add(this.cylinder);
     }
 
     update () {
@@ -33,13 +55,40 @@ class MyScene extends THREE.Scene {
       requestAnimationFrame(() => this.update())
       this.spotLight.intensity = this.guiControls.lightIntensity;
       this.axis.visible = this.guiControls.axisOnOff;
+      if (this.rotacion.position.y >= 15)
+
+      if (this.radio != this.guiControls.radio)
+      {
+          
+        this.remove(this.cylinder);
+        this.geometryCylinder = new THREE.CylinderGeometry(this.guiControls.radio, this.guiControls.radio,40,32);
+        this.cylinder = new THREE.Mesh (this.geometryCylinder, this.materialCylinder);
+        this.radio = this.guiControls.radio;
+
+        this.rotacion.remove(this.sphere);
+        this.sphere.position.x = this.guiControls.radio;
+        this.rotacion.add(this.sphere);
+        
+        this.add(this.cylinder);
+      }
       
-      this.sphere.update();
+      
+      if (this.rotacion.position.y >= 15)
+        this.subiendo = false;
+      else if (this.rotacion.position.y <= 0)
+        this.subiendo = true;
+
+      if (this.subiendo)
+        this.rotacion.position.y += this.guiControls.velocidadSubida;
+      else
+        this.rotacion.position.y -= this.guiControls.velocidadBajada;
+
+      this.rotacion.rotation.y += 0.1;
+      
       this.cameraControl.update();
 
       
       this.renderer.render (this, this.getCamera());
-      TWEEN.update();
     }
 
 
@@ -103,16 +152,24 @@ class MyScene extends THREE.Scene {
         // En el contexto de una función   this   alude a la función
         this.lightIntensity = 0.5;
         this.axisOnOff = true;
+        this.radio = 20.0;
+        this.velocidadSubida = 0.5;
+        this.velocidadBajada = 0.5;
       }
   
       // Se crea una sección para los controles de esta clase
-      var folder = gui.addFolder ('Luz y Ejes');
+      var folder1 = gui.addFolder ('Luz y Ejes');
+      var folder = gui.addFolder ('Animación');
       
       // Se le añade un control para la intensidad de la luz
-      folder.add (this.guiControls, 'lightIntensity', 0, 1, 0.1).name('Intensidad de la Luz : ');
+      folder1.add (this.guiControls, 'lightIntensity', 0, 1, 0.1).name('Intensidad de la Luz : ');
       
       // Y otro para mostrar u ocultar los ejes
-      folder.add (this.guiControls, 'axisOnOff').name ('Mostrar ejes : ');
+      folder1.add (this.guiControls, 'axisOnOff').name ('Mostrar ejes : ');
+
+      folder.add (this.guiControls, 'radio', 5, 40.0, 1.0).name ('Radio').listen();
+      folder.add (this.guiControls, 'velocidadSubida', 0.5, 2.5, 0.5).name ('VelocidadSubida').listen();
+      folder.add (this.guiControls, 'velocidadBajada', 0.5, 2.5, 0.5).name ('VelocidadBajada').listen();
       
       return gui;
     }
