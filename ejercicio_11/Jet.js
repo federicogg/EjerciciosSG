@@ -5,13 +5,13 @@ class Jet extends THREE.Object3D {
 
 
         this.createModel();
-        this.createSplines();
+        this.createSpline();
         //this.createSphere();
-        this.createRightTween();
+        this.createTweens();
 
     }
 
-    createSplines() {
+    createSpline() {
 
         this.spline = new THREE.CatmullRomCurve3(
             [new THREE.Vector3(0, 5, 0), new THREE.Vector3(4, 5, -5), new THREE.Vector3(10, 5, 0),
@@ -22,7 +22,7 @@ class Jet extends THREE.Object3D {
 
 
 
-    createRightTween() {
+    createTweens() {
 
         var origen = {x:0.0};
         this.parametro = 0;
