@@ -30,8 +30,8 @@ class MyScene extends THREE.Scene {
   createVisibleSpline() {
 
     var spline = new THREE.CatmullRomCurve3(
-        [new THREE.Vector3(0, 5, 0), new THREE.Vector3(4, 5., -5), new THREE.Vector3(10, 5, 0),
-        new THREE.Vector3(3, 5., 3), new THREE.Vector3(0, 5., 0)]);
+        [new THREE.Vector3(0, 5, 0), new THREE.Vector3(4, 5, -5), new THREE.Vector3(10, 5, 0),
+        new THREE.Vector3(3, 5, 3), new THREE.Vector3(0, 5, 0)]);
 
     var geometryLine = new THREE.Geometry()
     geometryLine.vertices = spline.getPoints(100);
@@ -39,7 +39,18 @@ class MyScene extends THREE.Scene {
     var material = new THREE.LineBasicMaterial({ color: 0x990808 });
     var visibleSpline = new THREE.Line(geometryLine, material);
 
+    this.spline2 = new THREE.CatmullRomCurve3(
+      [new THREE.Vector3(0, 5, 0), new THREE.Vector3(-4, 5, -5), new THREE.Vector3(-10, 5, 0),
+      new THREE.Vector3(-3, 5, 3), new THREE.Vector3(0, 5, 0)]);
+
+    var geometryLine = new THREE.Geometry()
+    geometryLine.vertices = this.spline2.getPoints(100);
+
+    var material = new THREE.LineBasicMaterial({ color: 0x990808 });
+    var visibleSpline2 = new THREE.Line(geometryLine, material);
+
     this.add(visibleSpline);
+    this.add(visibleSpline2);
   }
   
   
