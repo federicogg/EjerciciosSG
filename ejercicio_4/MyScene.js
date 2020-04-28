@@ -15,79 +15,34 @@ class MyScene extends THREE.Scene {
       this.axis = new THREE.AxesHelper (7);
       this.add (this.axis);
 
-      
+      this.addDiamond();
+      this.addHearth();
+      this.addHearthB();
 
-      //Marcas
-      var group = this.crearMarcas();
-      
-      
-      this.add(group);
-      this.dibujarReloj();
-      this.createGround();
+      this.rotacion = new THREE.Object3D();
+      this.rotacion.add(this.diamond);
+      this.rotacion.add(this.hearth);
 
-
+      this.add(this.rotacion);
     }
 
-    crearMarcas()
+    addHearth ()
     {
-      var material = new THREE.MeshPhongMaterial({color:0x13de60});
-      var geometry = new THREE.SphereGeometry();
-      geometry.translate(20,0,0);
-
-      var group = new THREE.Group();
-      var mesh = new THREE.Mesh(geometry, material);
-
-      for (var i=0; i<2*Math.PI; i += 0.79 )
-      {
-        var mesh = new THREE.Mesh(geometry, material);
-        mesh.rotation.y = i;
-        group.add(mesh);
-      }
-
-      return group;
+      this.hearth = new Hearth();
+      this.hearth.position.x = -15;
+      this.add (this.corazon);
     }
-
-    dibujarReloj()
+    addHearthB(){
+      this.hearthb = new HearthBarr();
+      this.hearthb.position.x = 30;
+      this.add (this.hearthb);
+    }
+    addDiamond()
     {
-      this.reloj = new Reloj(this.gui);
-      this.add(this.reloj);
+      this.diamond = new Diamond();
+      this.diamond.position.x = 15;
+      this.add(this.diamond);
     }
-
-    update () {
-
-      requestAnimationFrame(() => this.update())
-      this.spotLight.intensity = this.guiControls.lightIntensity;
-      this.axis.visible = this.guiControls.axisOnOff;
-      
-
-      this.cameraControl.update();
-      TWEEN.update();
-      
-      this.renderer.render (this, this.getCamera());
-    }
-
-
-    createGround () {
-      // El suelo es un Mesh, necesita una geometría y un material.
-      
-      // La geometría es una caja con muy poca altura
-      var geometryGround = new THREE.BoxGeometry (50,0.2,50);
-      
-      // El material se hará con una textura de madera
-      var texture = new THREE.TextureLoader().load('../imgs/wood.jpg');
-      var materialGround = new THREE.MeshPhongMaterial ({map: texture});
-      
-      // Ya se puede construir el Mesh
-      var ground = new THREE.Mesh (geometryGround, materialGround);
-      
-      // Todas las figuras se crean centradas en el origen.
-      // El suelo lo bajamos la mitad de su altura para que el origen del mundo se quede en su lado superior
-      ground.position.y = -0.1;
-      
-      // Que no se nos olvide añadirlo a la escena, que en este caso es  this
-      this.add (ground);
-    }
-
 
     
 
@@ -193,6 +148,25 @@ class MyScene extends THREE.Scene {
       this.renderer.setSize (window.innerWidth, window.innerHeight);
     }
   
+    update () {
+
+      requestAnimationFrame(() => this.update())
+      this.spotLight.intensity = this.guiControls.lightIntensity;
+      this.axis.visible = this.guiControls.axisOnOff;
+      
+
+      this.cameraControl.update();
+
+      this.rotacion.rotation.z += 0.01;
+      this.diamond.rotation.z -= 0.01;
+      this.hearth.rotation.z -= 0.01;
+
+      this.hearth.update();
+      this.diamond.update();
+      this.hearthb.update();
+      
+      this.renderer.render (this, this.getCamera());
+    }
   }
   
   /// La función   main
@@ -200,11 +174,10 @@ class MyScene extends THREE.Scene {
     
     // Se instancia la escena pasándole el  div  que se ha creado en el html para visualizar
     var scene = new MyScene("#WebGL-output");
-
+  
     // Se añaden los listener de la aplicación. En este caso, el que va a comprobar cuándo se modifica el tamaño de la ventana de la aplicación.
     window.addEventListener ("resize", () => scene.onWindowResize());
-
+    
     // Que no se nos olvide, la primera visualización.
     scene.update();
   });
-  

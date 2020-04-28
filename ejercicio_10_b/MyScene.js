@@ -84,7 +84,6 @@ class MyScene extends THREE.Scene {
         this.rotacion.position.y -= this.guiControls.velocidadBajada;
 
       this.rotacion.rotation.y += 0.01;
-      this.camera.position.x += 0.01;
       
       this.cameraControl.update();
 

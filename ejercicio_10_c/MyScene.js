@@ -1,6 +1,8 @@
 class MyScene extends THREE.Scene {
     constructor (myCanvas) {
       super();
+
+      
       
       // Lo primero, crear el visualizador, pasándole el lienzo sobre el que realizar los renderizados.
       this.renderer = this.createRenderer(myCanvas);
@@ -15,43 +17,13 @@ class MyScene extends THREE.Scene {
       this.axis = new THREE.AxesHelper (7);
       this.add (this.axis);
 
-      
-
-      //Marcas
-      var group = this.crearMarcas();
-      
-      
-      this.add(group);
-      this.dibujarReloj();
+      this.animation = new Animation(this.gui);
+      this.add(this.animation);
       this.createGround();
 
-
     }
 
-    crearMarcas()
-    {
-      var material = new THREE.MeshPhongMaterial({color:0x13de60});
-      var geometry = new THREE.SphereGeometry();
-      geometry.translate(20,0,0);
-
-      var group = new THREE.Group();
-      var mesh = new THREE.Mesh(geometry, material);
-
-      for (var i=0; i<2*Math.PI; i += 0.79 )
-      {
-        var mesh = new THREE.Mesh(geometry, material);
-        mesh.rotation.y = i;
-        group.add(mesh);
-      }
-
-      return group;
-    }
-
-    dibujarReloj()
-    {
-      this.reloj = new Reloj(this.gui);
-      this.add(this.reloj);
-    }
+    
 
     update () {
 
@@ -59,10 +31,12 @@ class MyScene extends THREE.Scene {
       this.spotLight.intensity = this.guiControls.lightIntensity;
       this.axis.visible = this.guiControls.axisOnOff;
       
-
-      this.cameraControl.update();
-      TWEEN.update();
       
+      this.cameraControl.update();
+
+      this.animation.update();
+      TWEEN.update();
+
       this.renderer.render (this, this.getCamera());
     }
 
@@ -71,7 +45,7 @@ class MyScene extends THREE.Scene {
       // El suelo es un Mesh, necesita una geometría y un material.
       
       // La geometría es una caja con muy poca altura
-      var geometryGround = new THREE.BoxGeometry (50,0.2,50);
+      var geometryGround = new THREE.BoxGeometry (100,0.2,100);
       
       // El material se hará con una textura de madera
       var texture = new THREE.TextureLoader().load('../imgs/wood.jpg');
@@ -127,16 +101,21 @@ class MyScene extends THREE.Scene {
         // En el contexto de una función   this   alude a la función
         this.lightIntensity = 0.5;
         this.axisOnOff = true;
+        this.radio = 20.0;
+        this.velocidadSubida = 0.5;
+        this.velocidadBajada = 0.5;
       }
   
       // Se crea una sección para los controles de esta clase
-      var folder = gui.addFolder ('Luz y Ejes');
+      var folder1 = gui.addFolder ('Luz y Ejes');
+      
       
       // Se le añade un control para la intensidad de la luz
-      folder.add (this.guiControls, 'lightIntensity', 0, 1, 0.1).name('Intensidad de la Luz : ');
+      folder1.add (this.guiControls, 'lightIntensity', 0, 1, 0.1).name('Intensidad de la Luz : ');
       
       // Y otro para mostrar u ocultar los ejes
-      folder.add (this.guiControls, 'axisOnOff').name ('Mostrar ejes : ');
+      folder1.add (this.guiControls, 'axisOnOff').name ('Mostrar ejes : ');
+
       
       return gui;
     }

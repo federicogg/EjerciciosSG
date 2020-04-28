@@ -13,8 +13,27 @@ class Reloj extends THREE.Object3D {
     var material = new THREE.MeshPhongMaterial ({color: 0xee430d});
     
     this.mesh = new THREE.Mesh(geometry,material);
+    this.createTween();
+    
+  }
+  
+  createTween()
+  {
+    var origen = {x:0.0};
+    var destino = {x:2*Math.PI};
+    this.loop = 8000; //Numero de marcas x 1000ms
+    this.movimiento = new TWEEN.Tween(origen).to(destino, this.loop);
+    
+    var that = this;
+    this.movimiento.onUpdate(function()
+    {
+      that.mesh.rotation.y = origen.x *  that.guiControls.velocidad;
+    });
+
     this.add(this.mesh);
-   
+    this.movimiento.repeat(Infinity);
+    this.movimiento.start();
+    
   }
   
   createGUI (gui) {
@@ -30,14 +49,6 @@ class Reloj extends THREE.Object3D {
     folder.add (this.guiControls, 'velocidad', -20.0, 20.0, 1.0).name ('Velocidad').listen();
 
   }
-  
-  update () {
-    // Primero, el escalado
-    // Segundo, la rotación en Z
-    // Después, la rotación en Y
-    // Luego, la rotación en X
-    // Y por último la traslación
 
-    this.rotation.y += this.guiControls.velocidad*0.025;
-  }
+
 }
